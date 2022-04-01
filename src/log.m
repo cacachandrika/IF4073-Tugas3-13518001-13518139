@@ -1,5 +1,9 @@
-function edgeIm = logauss(I)
+function edgeIm = log(I)
+    [M,N,D]=size(I);
     H = fspecial('log');
-    J = uint8(convn(double(I), double(H)));
-    figure, imshow(J), title ('Hasil deteksi tepi dengan LoG');
+    edgeIm = uint8(convn(double(I), double(H), 'same'));
+%     figure, imshow(edgeIm), title ('Hasil deteksi tepi dengan LoG');
+    for i = 1:M
+        edgeIm(i,1)=0;
+    end
 end
