@@ -18,8 +18,8 @@ function segmentedIm = imageSegmentation(x)
     red_processed=x(:,:,1).*uint8(mask_image);
     green_processed=x(:,:,2).*uint8(mask_image);
     blue_processed=x(:,:,3).*uint8(mask_image);
-    op=cat(3,red_processed,green_processed,blue_processed);
+    segmentedIm=cat(3,red_processed,green_processed,blue_processed);
     figure;
-    imshow(op);
+    imshow(segmentedIm);
     title('Output Image')
 end
