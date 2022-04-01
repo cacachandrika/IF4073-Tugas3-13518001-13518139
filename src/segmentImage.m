@@ -14,18 +14,21 @@ function [edge_image, segmented_image] = segmentImage(img, filter)
         case 'canny' 
             edge_image = edge(rgb2gray(img),'canny');
     end
-    closed_image = imclose(edge_image,strel('line',5,0));
+    edge_image = uint8(edge_image);
+
+    % Close disconnected edges 
+    closed_image = imclose(edge_image,strel('line',10,0));
     
-    % Fill the image
+    % Fill inside the edges
     filled_image = imfill(closed_image, 'holes');
 
     % Remove small objects
     opened_image = imopen(filled_image, strel(ones(3,3)));
-    mask_image = bwareaopen(opened_image,1000);
-
+    mask_image = bwareaopen(opened_image,1500);
+    
     % Apply mask to each of the RGB layer
-    red_processed=img(:,:,1).*uint8(mask_image);
-    green_processed=img(:,:,2).*uint8(mask_image);
-    blue_processed=img(:,:,3).*uint8(mask_image);
-    segmented_image = cat(3,red_processed,green_processed,blue_processed);
+    red_processed = img(:,:,1).*uint8(mask_image);
+    green_processed = img(:,:,2).*uint8(mask_image);
+    blue_processed = img(:,:,3).*uint8(mask_image);
+    segmented_image = cat(3, red_processed, green_processed, blue_processed);
 end
